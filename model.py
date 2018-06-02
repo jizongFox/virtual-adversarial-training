@@ -7,7 +7,7 @@ class VAT(nn.Module):
             super(VAT, self).__init__()
             self.top_bn = top_bn
             self.main = nn.Sequential(
-                  nn.Conv2d(3, 128, 3, 1, 1, bias=False),
+                  nn.Conv2d(1, 128, 3, 1, 1, bias=False),
                   nn.BatchNorm2d(128),
                   nn.LeakyReLU(0.1),
 

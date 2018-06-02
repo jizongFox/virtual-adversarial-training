@@ -38,7 +38,7 @@ def tocuda(x):
 
 
 def train(model, x, y, ul_x, optimizer):
-
+# x is the labeled data with y being the target. ul_x is the unlabeled data.
     ce = nn.CrossEntropyLoss()
     y_pred = model(x)
     ce_loss = ce(y_pred, y)
@@ -108,7 +108,23 @@ elif opt.dataset == 'cifar10':
                           transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
                       ])),
         batch_size=eval_batch_size, shuffle=True)
+elif opt.dataset == 'mnist':
+    num_labeled = 4000
+    train_loader = torch.utils.data.DataLoader(
+        datasets.MNIST(root=opt.dataroot, train=True, download=True,
+                      transform=transforms.Compose([
+                          transforms.ToTensor(),
+                          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                      ])),
+        batch_size=batch_size, shuffle=True)
 
+    test_loader = torch.utils.data.DataLoader(
+        datasets.MNIST(root=opt.dataroot, train=False, download=True,
+                      transform=transforms.Compose([
+                          transforms.ToTensor(),
+                          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                      ])),
+        batch_size=eval_batch_size, shuffle=True)
 else:
     raise NotImplementedError
 
@@ -127,6 +143,7 @@ valid_target, train_target = train_target[:num_valid], train_target[num_valid:, 
 
 labeled_train, labeled_target = train_data[:num_labeled, ], train_target[:num_labeled, ]
 unlabeled_train = train_data[num_labeled:, ]
+
 
 model = tocuda(VAT(opt.top_bn))
 model.apply(weights_init)

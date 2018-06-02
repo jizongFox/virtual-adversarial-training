@@ -27,7 +27,7 @@ def vat_loss(model, ul_x, ul_y, xi=1e-6, eps=2.5, num_iters=1):
 
     # find r_adv
 
-    d = torch.Tensor(ul_x.size()).normal_()
+    d = torch.Tensor(ul_x.size()).normal_() # 所有元素的std =1, average = 0
     for i in range(num_iters):
         d = xi *_l2_normalize(d)
         d = Variable(d.cuda(), requires_grad=True)

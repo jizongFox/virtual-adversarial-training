@@ -157,7 +157,7 @@ for epoch in range(opt.num_epochs):
         optimizer.lr = decayed_lr
         optimizer.betas = (0.5, 0.999)
 
-    for i in range(num_iter_per_epoch):
+    for i in range(1,num_iter_per_epoch+1):
 
         batch_indices = torch.LongTensor(np.random.choice(labeled_train.size()[0], batch_size, replace=False))
         x = labeled_train[batch_indices]
